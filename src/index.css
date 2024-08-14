@@ -1,0 +1,175 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+
+/* css start for deshboard */
+
+
+/* ........................................navbar css...................................... */
+
+header {
+  padding: 15px 20px;
+  z-index: 9;
+  background: #FFF;
+  margin-bottom: 20px;
+  position: sticky;
+  top: 0px;
+  box-shadow: 4px 1px 4px #DDD;
+}
+header .searchBox {
+  position: relative;
+}
+header .searchBox .form-control {
+  height: 40px;
+  border-radius: 10px;
+  border: 2px solid #C7C9D9;
+}
+header .searchBox .icon {
+  position: absolute;
+  top: -3px;
+  right: 10px;
+  color: #0180F5;
+  font-size: 25px;
+}
+.rightMenu ul {
+  display: flex;
+  justify-content: end;
+  gap: 20px;
+  align-items: center;
+  margin: 0px;
+  list-style: none;
+}
+
+.mainRoot{position:relative; width:100%; margin:0px; padding-left:300px; background:#f5f6fa;}
+.mainRoot .leftMenu{position:fixed; left:0px; top:0px; width:300px; height:100%; overflow:auto; padding:10px; background:#FFF; box-shadow:0 0 10px #DDD;}
+/* ........................................sidebar  css...................................... */
+.sidebar {
+  width: 200px;
+  height: 100vh;
+  background-color: #2c3e50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+  overflow: hidden; /* Prevent scrollbar */
+}
+
+.sidebar-item {
+  width: 100%;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  color: white;
+  text-decoration: none;
+  /* transition: background 0.3s; */
+}
+
+.sidebar-item:hover {
+  background-color: #34495e;
+  cursor: pointer;
+}
+
+.icon {
+  margin-right: 10px;
+}
+
+
+
+/*===============================  model css ========================== */
+
+.loginModal .modal-content{border-radius:20px; border:0px; font-family: "Poppins", sans-serif;}
+.loginModal .modalClose{position:absolute; top:-35px; right:-10px; font-size:40px; color:#000;}
+
+.loginModal h3.title{font-size:30px; font-weight:600;}
+.loginModal .form-select,
+.loginModal .form-control{height:48px; border:2px solid #E0E2E9; border-radius:10px;}
+
+
+.loginModal .inputWithIcon .form-control{padding-left:50px;}
+
+.inputWithIcon{position:relative;}
+.inputWithIcon .icon{position:absolute; top:5px; left:14px; font-size:24px; color:#ADB0CD;}
+
+.loginModal input[type]::placeholder{color:#ADB0CD; opacity:1; }
+.loginModal input[type]::-ms-input-placeholder {color:#ADB0CD; }
+
+
+
+button.btn.btnLogin.btn-primary {
+  background-color: blue;
+ 
+}
+
+
+
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f8f9fa;
+}
+
+.login-form {
+  background: rgb(226, 222, 222);
+  padding: 6rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.close-icon {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  cursor: pointer;
+}
+
+.inputWithIcon .icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.inputWithIcon input {
+  padding-left: 40px;
+}
+
+
+
+
+.LoginBtn {
+  position: relative;
+  cursor: pointer;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 0px;
+  z-index: 1000;
+}
+
+.dropdown button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px 10px;
+  text-align: left;
+  width: 100%;
+}
