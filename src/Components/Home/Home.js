@@ -1,38 +1,46 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { FaRegEnvelope } from "react-icons/fa";
 import { FiKey } from "react-icons/fi";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { SetUserData } from "../../store/reducer/authUser";
+import apiURl from "../../store/Action/api-url";
 
 
 const Home = () => {
-    const [email, setEmail] = useState("");
+    const [mobileNo, setMobileNo] = useState("");
     const [password, setPassword] = useState("");
     const [userData, setUserData] = useState("");
     const navigate=useNavigate();
+    const dispatch = useDispatch();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // const payload = {
-        //     Email_ID: email,
-        //     Password: password,
-        // };
-        // try {
-        //     const respons = await axios.post(
-        //         `${process.env.REACT_APP_API_BACKEND_URL}/Signin`,
-        //         payload
-        //     );
+        const payload = {
+            mobileNo: mobileNo,
+            password: password,
+        };
+        try {
+            const respons = await axios.post(
+                `${process.env.REACT_APP_API_BACKEND_URL}/${apiURl.login}`,
+                payload
+            );
 
-        //     if (respons?.data?.status === "true") {
-        //         localStorage.setItem("userData", JSON.stringify(respons?.data))
-        //         setUserData(respons?.data?.data);
-        //         toast.success(respons?.data?.message);
-        //         navigate('/dashboard'); 
-        //     }
-        // } catch (error) {
-        //     console.log(error, "errorerrorerror");
-        // }
-         navigate('/dashboard'); 
+            if (respons?.data?.status === "true") {
+                localStorage.setItem("userData", JSON.stringify(respons?.data))
+                setUserData(respons?.data);
+                dispatch(SetUserData(respons?.data));
+                // toast.success(respons?.data?.message);
+                navigate('/dashboard'); 
+            }else {
+                alert(respons?.data?.message)
+            }
+        } catch (error) {
+            alert(error?.response?.data?.message);
+        }
+        //  navigate('/dashboard'); 
 
     };
 
@@ -53,12 +61,12 @@ const Home = () => {
                                 <FaRegEnvelope />
                             </span>
                             <input
-                                placeholder="Your email"
-                                type="email"
+                                placeholder="Your mobile"
+                                type="text"
                                 className="form-control"
-                                id="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                id="mobile"
+                                value={mobileNo}
+                                onChange={(e) => setMobileNo(e.target.value)}
                                 required
                             />
                         </div>

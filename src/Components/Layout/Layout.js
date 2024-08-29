@@ -6,27 +6,16 @@ import Sidebar from '../Sidebar/Sidebar'
 
 function Layout() {
   return (
-    // <div>
-
-
-
-
-    //     <Header/>
-    //     <Outlet/>
-    //     <Footer/>
-
-    // </div>
-
-
-<div className="mainRoot">
-  {/* <Sidebar/> */}
-  <div className="mainContent">
-    <Header/>
-    <div className="px-5 py-4">
-      <Outlet/>
+      
+    <div className="mainRoot">
+      {/* <Sidebar/> */}
+      <div className="mainContent">
+        <Header/>
+        <div className="px-5 py-4">
+          <Outlet/>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
   )
 }
