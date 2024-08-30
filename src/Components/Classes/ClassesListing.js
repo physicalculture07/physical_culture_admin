@@ -48,7 +48,7 @@ const ClassesListing = () => {
   };
   const fetchCourses = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_BACKEND_URL+apiURl.courses}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_BACKEND_URL+apiURl.all_courses}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

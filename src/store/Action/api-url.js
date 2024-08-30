@@ -8,7 +8,7 @@ const apiURl = {
   all_courses:"/admin/all_courses",
   create_course:"/admin/create_course",
   edit_course:"/admin/create_course",
-  all_courses:"/admin/all_courses",
+  // all_courses:"/admin/all_courses",
   remove_course:"/admin/remove_course",
 
 
