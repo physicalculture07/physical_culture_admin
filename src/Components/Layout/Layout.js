@@ -16,7 +16,7 @@ function Layout() {
     <div className="mainRoot">
       {token && <Sidebar/>}
       <div className="mainContent">
-        <Header/>
+        {/* <Header/> */}
         <div className="px-5 py-4">
           <Outlet/>
         </div>
