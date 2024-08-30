@@ -10,6 +10,10 @@ import UserListing from "./Components/Users/Listing";
 import CoursesListing from "./Components/Courses/Listing";
 import NewCoursesListing from "./Components/Courses/NewCoursesListing";
 import ClassesListing from "./Components/Classes/ClassesListing";
+import PdfNotesListing from "./Components/PdfNotes/PdfNotesListing";
+import PreviousPaperListing from "./Components/PreviousPaper/PreviousPaperListing";
+import SyllabusListing from "./Components/Syllabus/SyllabusListing";
+import TestSeriesListing from "./Components/TestSeries/TestSeriesListing";
 
 function App() {
   // const userData = localStorage.getItem("userData");
@@ -39,9 +43,13 @@ function App() {
             <Route path="/" element={<Sidebar />} />
             <Route path="/dashboard" element={<Sidebar />} />
             <Route path="/users" element={<UserListing />} />
-            <Route path="/courses" element={<CoursesListing />} />
-            <Route path="/abc" element={<NewCoursesListing />} />
-            <Route path="/abc2" element={<ClassesListing />} />
+            {/* <Route path="/courses" element={<CoursesListing />} /> */}
+            <Route path="/courses" element={<NewCoursesListing />} />
+            <Route path="/classes" element={<ClassesListing />} />
+            <Route path="/notes" element={<PdfNotesListing />} />
+            <Route path="/previouspaper" element={<PreviousPaperListing />} />
+            <Route path="/syllabus" element={<SyllabusListing />} />
+            <Route path="/testseries" element={<TestSeriesListing />} />
           </>
         ) : (
           <>
