@@ -24,7 +24,7 @@ const Home = () => {
         };
         try {
             const respons = await axios.post(
-                `${process.env.REACT_APP_API_BACKEND_URL}/${apiURl.login}`,
+                `${process.env.REACT_APP_API_BACKEND_URL+apiURl.login}`,
                 payload
             );
 
