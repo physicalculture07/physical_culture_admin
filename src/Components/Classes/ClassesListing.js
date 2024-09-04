@@ -13,6 +13,7 @@ const ClassesListing = () => {
   const [classesData, setClassesData] = useState({
     className: "",
     courseId: "",
+    classDescription: "",
     classVideo: null,
     classNotes: null,
   });
@@ -84,6 +85,7 @@ const ClassesListing = () => {
       const formData = new FormData();
       formData.append('className', classesData.className);
       formData.append('courseId', classesData.courseId);
+      formData.append('classDescription', classesData.classDescription);
       formData.append('classVideo', classesData.classVideo);
       formData.append('classNotes', classesData.classNotes);
 
@@ -118,6 +120,7 @@ const ClassesListing = () => {
       const formData = new FormData();
       formData.append('className', classesData.className);
       formData.append('courseId', classesData.courseId);
+      formData.append('classDescription', classesData.classDescription);
       formData.append('classVideo', classesData.classVideo);
       formData.append('classNotes', classesData.classNotes);
 
@@ -207,6 +210,7 @@ const ClassesListing = () => {
                   <th scope="col">No</th>
                   <th scope="col">Class Name</th>
                   <th scope="col">Course Id</th>
+                  <th scope="col">Class Description</th>
                   <th scope="col">Class Video</th>
                   <th scope="col">Class Note</th>
                   <th scope="col">Created At</th>
@@ -219,6 +223,7 @@ const ClassesListing = () => {
                     <th scope="row">{index + 1}</th>
                     <td>{cl?.className}</td>
                     <td>{cl?.courseId}</td>
+                    <td>{cl?.classDescription}</td>
                     <td>{cl?.classVideo}</td>
                     <td>{cl?.classNotes}</td>
                     <td>{cl?.createdAt}</td>
@@ -267,6 +272,18 @@ const ClassesListing = () => {
                 type="text"
                 name="className"
                 value={classesData.className}
+                onChange={handleChange}
+                placeholder="Enter Course name"
+                className="form-control"
+              />
+
+              <label>
+                <h6>Class Description</h6>
+              </label>
+              <input
+                type="text"
+                name="classDescription"
+                value={classesData.classDescription}
                 onChange={handleChange}
                 placeholder="Enter Course name"
                 className="form-control"
@@ -359,6 +376,19 @@ const ClassesListing = () => {
                 type="text"
                 name="className"
                 value={classesData.className}
+                onChange={handleChange}
+                placeholder="Enter Class name"
+                className="form-control"
+                readOnly={!editMode}
+              />
+
+              <label>
+                <h6>Class Description</h6>
+              </label>
+              <input
+                type="text"
+                name="classDescription"
+                value={classesData.classDescription}
                 onChange={handleChange}
                 placeholder="Enter Class name"
                 className="form-control"
