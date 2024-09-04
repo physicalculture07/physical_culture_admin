@@ -4,25 +4,48 @@ import { IoClose } from "react-icons/io5";
 import Modal from "react-bootstrap/Modal";
 import apiURl from "../../store/Action/api-url";
 
-const NewCoursesListing = () => {
+const ClassesListing = () => {
   const [showCreate, setShowCreate] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const [editMode, setEditMode] = useState(false);
-  const [courseData, setCourseData] = useState({
-    courseName: "",
-    courseFees: "",
-    courseValidity: "",
-    courseImage: null,
+  const [classesData, setClassesData] = useState({
+    className: "",
+    courseId: "",
+    classVideo: null,
+    classNotes: null,
+
+
   });
 
   
+  const [classes, setClasses] = useState([]);
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
 
   useEffect(() => {
+    fetchClasses();
     fetchCourses();
   }, []);
 
+  const fetchClasses = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_BACKEND_URL+apiURl.all_classes}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setClasses(data?.data);
+    } catch (error) {
+      console.error("Error fetching classes:", error);
+    }
+  };
   const fetchCourses = async () => {
     try {
       const response = await fetch(`${process.env.REACT_APP_API_BACKEND_URL+apiURl.all_courses}`, {
@@ -42,35 +65,33 @@ const NewCoursesListing = () => {
       console.error("Error fetching courses:", error);
     }
   };
+  
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    setCourseData({
-      ...courseData,
-      [name]: files ? files[0] : value,
+    setClassesData({
+      ...classesData,
+      [name]: files ? files[0] : value
     });
   };
 
   const handleCreate = async () => {
     try {
       const formData = new FormData();
-      formData.append('courseName', courseData.courseName);
-      formData.append('courseFees', courseData.courseFees);
-      formData.append('courseValidity', courseData.courseValidity);
-      formData.append('courseImage', courseData.courseImage);
+      formData.append('className', classesData.className);
+      formData.append('courseId', classesData.courseId);
+      formData.append('classVideo', classesData.classVideo);
+      formData.append('classNotes', classesData.classNotes);
 
-      const response = await fetch(`${process.env.REACT_APP_API_BACKEND_URL+apiURl.create_course}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_BACKEND_URL+apiURl.create_classes}`, {
         method: "POST",
-        // headers: {
-        //   "Content-Type": "application/json",
-        // },
         body: formData,
       });
 
       if (response.ok) {
         console.log("Course created successfully");
         setShowCreate(false);
-        fetchCourses();
+        fetchClasses();
       } else {
         console.error("Failed to create course");
       }
@@ -82,16 +103,12 @@ const NewCoursesListing = () => {
   const handleUpdate = async () => {
     try {
       const formData = new FormData();
-      formData.append('courseName', courseData.courseName);
-      formData.append('courseFees', courseData.courseFees);
-      formData.append('courseValidity', courseData.courseValidity);
-      formData.append('courseImage', courseData.courseImage);
-
-      const response = await fetch(`${process.env.REACT_APP_API_BACKEND_URL+apiURl.edit_course}/${selectedCourse._id}`, {
+      formData.append('className', classesData.className);
+      formData.append('courseId', classesData.courseId);
+      formData.append('classVideo', classesData.classVideo);
+      formData.append('classNotes', classesData.classNotes);
+      const response = await fetch(`${process.env.REACT_APP_API_BACKEND_URL+apiURl.edit_class}/${selectedCourse}`, {
         method: "PUT",
-        // headers: {
-        //   "Content-Type": "application/json",
-        // },
         body: formData,
       });
 
@@ -99,7 +116,7 @@ const NewCoursesListing = () => {
         console.log("Course updated successfully");
         setShowDetails(false);
         setEditMode(false);
-        fetchCourses();
+        fetchClasses();
       } else {
         console.error("Failed to update course");
       }
@@ -110,7 +127,7 @@ const NewCoursesListing = () => {
 
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_BACKEND_URL+apiURl.remove_course}/${id}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_BACKEND_URL+apiURl.remove_class}/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -119,7 +136,7 @@ const NewCoursesListing = () => {
 
       if (response.ok) {
         console.log("Course deleted successfully");
-        fetchCourses();
+        fetchClasses();
       } else {
         console.error("Failed to delete course");
       }
@@ -130,7 +147,7 @@ const NewCoursesListing = () => {
 
   const handleShowDetails = async (id) => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_BACKEND_URL+apiURl.all_courses}/${id}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_BACKEND_URL+apiURl.classes_details}/${id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -142,8 +159,8 @@ const NewCoursesListing = () => {
       }
 
       const data = await response.json();
-      setSelectedCourse(data.data);
-      setCourseData(data.data || {}); // Populate courseData with the details or keep it as an empty object
+      setSelectedCourse(id);
+      setClassesData(data.data || {}); // Populate classesData with the details or keep it as an empty object
       setShowDetails(true);
       setEditMode(false); // Ensure edit mode is off by default
     } catch (error) {
@@ -156,7 +173,7 @@ const NewCoursesListing = () => {
       <div className="container-fluid ps-3">
         <div className="d-flex justify-content-end mb-3">
           <button className="btn btn-primary" onClick={() => setShowCreate(true)}>
-            Create New Course
+            Create New Class
           </button>
         </div>
 
@@ -166,38 +183,37 @@ const NewCoursesListing = () => {
               <thead>
                 <tr>
                   <th scope="col">No</th>
-                  <th scope="col">Course Name</th>
-                  <th scope="col">Fees</th>
-                  <th scope="col">Course Validity</th>
-                  <th scope="col">Course Image</th>
-                  <th scope="col">Fees</th>
+                  <th scope="col">Class Name</th>
+                  <th scope="col">Course Id</th>
+                  <th scope="col">Class Video</th>
+                  <th scope="col">Class Note</th>
                   
                   <th scope="col">Created At</th>
                   <th scope="col">Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {courses.map((course, index) => (
+                {classes.map((cl, index) => (
                   <tr key={index}>
                     <th scope="row">{index + 1}</th>
-                    <td>{course?.courseName}</td>
-                    <td>{course?.courseFees}</td>
-                    <td>{course?.courseValidity}</td>
-                    <td>{course?.courseImage}</td>
-                    <td>{course?.createdAt}</td>
+                    <td>{cl?.className}</td>
+                    <td>{cl?.courseId}</td>
+                    <td>{cl?.classVideo}</td>
+                    <td>{cl?.classNotes}</td>
+                    <td>{cl?.createdAt}</td>
                     <td>
                       <button 
                         className="btn btn-info btn-sm me-2" 
-                        onClick={() => handleShowDetails(course._id)}
+                        onClick={() => handleShowDetails(cl._id)}
                       >
                         Details
                       </button>
-                      {/* <button 
+                      <button 
                         className="btn btn-danger btn-sm" 
-                        onClick={() => handleDelete(course._id)}
+                        onClick={() => handleDelete(cl._id)}
                       >
                         Delete
-                      </button> */}
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -207,11 +223,11 @@ const NewCoursesListing = () => {
         </div>
       </div>
 
-      {/* Create New Course Modal */}
+      {/* Create New Class Modal */}
       <Modal show={showCreate} onHide={() => setShowCreate(false)}>
         <Modal.Body>
           <h3 className="text-center py-4 position-relative title">
-            Create New Course
+            Create New Class
             <span
               className="modalClose"
               onClick={() => setShowCreate(false)}
@@ -224,51 +240,58 @@ const NewCoursesListing = () => {
           <div className="p-4">
             <div className="form-group mb-4">
               <label>
-                <h6>Course Name</h6>
+                <h6>Class Name</h6>
               </label>
               <input
                 type="text"
-                name="courseName"
-                value={courseData.courseName}
+                name="className"
+                value={classesData.className}
                 onChange={handleChange}
                 placeholder="Enter Course name"
                 className="form-control"
               />
 
-              <label>
-                <h6>Course Fees</h6>
-              </label>
-              <input
-                type="text"
-                name="courseFees"
-                value={courseData.courseFees}
-                onChange={handleChange}
-                placeholder="Enter Course Fees"
-                className="form-control"
-              />
+              
 
-              <label>
-                <h6>Course Validity</h6>
-              </label>
-              <input
-                type="text"
-                name="courseValidity"
-                value={courseData.courseValidity}
-                onChange={handleChange}
-                placeholder="Enter Course Validity"
-                className="form-control"
-              />
+            <label>
+              <h6>Course</h6>
+            </label>
+            <select
+              name="courseId"
+              value={classesData.courseId}
+              onChange={handleChange}
+              className="form-control"
+            >
+              <option value="">Select Course</option>
+              {courses.map(course => (
+                <option key={course._id} value={course._id}>
+                  {course.courseName}
+                </option>
+              ))}
+            </select>
 
-              <label>
-                <h6>Course Image</h6>
-              </label>
-              <input
-                type="file"
-                name="courseImage"
-                onChange={handleChange}
-                placeholder="Upload Class Notes"
-                className="form-control"
-              />
+            <label>
+              <h6>Upload Video</h6>
+            </label>
+            <input
+              type="file"
+              name="classVideo"
+              accept="video/*"
+              onChange={handleChange}
+              className="form-control"
+            />
+
+            <label>
+              <h6>Upload PDF</h6>
+            </label>
+            <input
+              type="file"
+              name="classNotes"
+              accept="application/pdf"
+              onChange={handleChange}
+              className="form-control"
+            />
+
             </div>
             <div className="text-center">
               <button
@@ -286,7 +309,7 @@ const NewCoursesListing = () => {
       <Modal show={showDetails} onHide={() => setShowDetails(false)}>
         <Modal.Body>
           <h3 className="text-center py-4 position-relative title">
-            Course Details
+            Class Details
             <span
               className="modalClose"
               onClick={() => setShowDetails(false)}
@@ -299,52 +322,56 @@ const NewCoursesListing = () => {
           <div className="p-4">
             <div className="form-group mb-4">
             <label>
-                <h6>Course Name</h6>
+                <h6>Class Name</h6>
               </label>
               <input
                 type="text"
-                name="courseName"
-                value={courseData.courseName}
+                name="className"
+                value={classesData.className}
                 onChange={handleChange}
                 placeholder="Enter Course name"
                 className="form-control"
               />
-
               <label>
-                <h6>Course Fees</h6>
-              </label>
-              <input
-                type="text"
-                name="courseFees"
-                value={courseData.courseFees}
-                onChange={handleChange}
-                placeholder="Enter Course Fees"
-                className="form-control"
-              />
+              <h6>Course</h6>
+            </label>
+            <select
+              name="courseId"
+              value={classesData.courseId}
+              onChange={handleChange}
+              className="form-control"
+            >
+              <option value="">Select Course</option>
+              {courses.map(course => (
+                <option key={course._id} value={course._id}>
+                  {course.courseName}
+                </option>
+              ))}
+            </select>
 
-              <label>
-                <h6>Course Validity</h6>
-              </label>
-              <input
-                type="text"
-                name="courseValidity"
-                value={courseData.courseValidity}
-                onChange={handleChange}
-                placeholder="Enter Course Validity"
-                className="form-control"
-              />
+            <label>
+              <h6>Upload Video</h6>
+            </label>
+            <input
+              type="file"
+              name="classVideo"
+              accept="video/*"
+              onChange={handleChange}
+              className="form-control"
+            />
 
-              <label>
-                <h6>Course Image</h6>
-              </label>
-              <input
-                type="file"
-                name="courseImage"
-                onChange={handleChange}
-                placeholder="Upload Class Notes"
-                className="form-control"
-              />
+            <label>
+              <h6>Upload PDF</h6>
+            </label>
+            <input
+              type="file"
+              name="classNotes"
+              accept="application/pdf"
+              onChange={handleChange}
+              className="form-control"
+            />
 
+              
             </div>
             <div className="text-center">
               {editMode ? (
@@ -378,4 +405,4 @@ const NewCoursesListing = () => {
   );
 };
 
-export default NewCoursesListing;
+export default ClassesListing;

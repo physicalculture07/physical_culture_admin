@@ -3,6 +3,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { IoClose } from "react-icons/io5";
 import Modal from "react-bootstrap/Modal";
 import apiURl from "../../store/Action/api-url";
+import ProgressBar from 'react-bootstrap/ProgressBar'; // Import Bootstrap ProgressBar component
+import Spinner from 'react-bootstrap/Spinner'; // Import Bootstrap Spinner component
 
 const ClassesListing = () => {
   const [showCreate, setShowCreate] = useState(false);
@@ -13,14 +15,15 @@ const ClassesListing = () => {
     courseId: "",
     classVideo: null,
     classNotes: null,
-
-
   });
 
-  
   const [classes, setClasses] = useState([]);
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
+  
+  // New state variables for loader and progress bar
+  const [isLoading, setIsLoading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   useEffect(() => {
     fetchClasses();
@@ -46,6 +49,7 @@ const ClassesListing = () => {
       console.error("Error fetching classes:", error);
     }
   };
+
   const fetchCourses = async () => {
     try {
       const response = await fetch(`${process.env.REACT_APP_API_BACKEND_URL+apiURl.all_courses}`, {
@@ -65,18 +69,18 @@ const ClassesListing = () => {
       console.error("Error fetching courses:", error);
     }
   };
-  
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     setClassesData({
       ...classesData,
-      [name]: files ? files[0] : value
+      [name]: files ? files[0] : value,
     });
   };
 
   const handleCreate = async () => {
     try {
+      setIsLoading(true); // Start the loader
       const formData = new FormData();
       formData.append('className', classesData.className);
       formData.append('courseId', classesData.courseId);
@@ -86,42 +90,60 @@ const ClassesListing = () => {
       const response = await fetch(`${process.env.REACT_APP_API_BACKEND_URL+apiURl.create_classes}`, {
         method: "POST",
         body: formData,
+        // Track the upload progress
+        onUploadProgress: (event) => {
+          const progress = Math.round((event.loaded * 100) / event.total);
+          setUploadProgress(progress);
+        }
       });
 
       if (response.ok) {
-        console.log("Course created successfully");
+        console.log("Class created successfully");
         setShowCreate(false);
         fetchClasses();
       } else {
-        console.error("Failed to create course");
+        console.error("Failed to create class");
       }
     } catch (error) {
-      console.error("Error creating course:", error);
+      console.error("Error creating class:", error);
+    } finally {
+      setIsLoading(false); // Stop the loader
+      setUploadProgress(0); // Reset progress
     }
   };
 
   const handleUpdate = async () => {
     try {
+      setIsLoading(true); // Start the loader
       const formData = new FormData();
       formData.append('className', classesData.className);
       formData.append('courseId', classesData.courseId);
       formData.append('classVideo', classesData.classVideo);
       formData.append('classNotes', classesData.classNotes);
+
       const response = await fetch(`${process.env.REACT_APP_API_BACKEND_URL+apiURl.edit_class}/${selectedCourse}`, {
         method: "PUT",
         body: formData,
+        // Track the upload progress
+        onUploadProgress: (event) => {
+          const progress = Math.round((event.loaded * 100) / event.total);
+          setUploadProgress(progress);
+        }
       });
 
       if (response.ok) {
-        console.log("Course updated successfully");
+        console.log("Class updated successfully");
         setShowDetails(false);
         setEditMode(false);
         fetchClasses();
       } else {
-        console.error("Failed to update course");
+        console.error("Failed to update class");
       }
     } catch (error) {
-      console.error("Error updating course:", error);
+      console.error("Error updating class:", error);
+    } finally {
+      setIsLoading(false); // Stop the loader
+      setUploadProgress(0); // Reset progress
     }
   };
 
@@ -135,13 +157,13 @@ const ClassesListing = () => {
       });
 
       if (response.ok) {
-        console.log("Course deleted successfully");
+        console.log("Class deleted successfully");
         fetchClasses();
       } else {
-        console.error("Failed to delete course");
+        console.error("Failed to delete class");
       }
     } catch (error) {
-      console.error("Error deleting course:", error);
+      console.error("Error deleting class:", error);
     }
   };
 
@@ -164,7 +186,7 @@ const ClassesListing = () => {
       setShowDetails(true);
       setEditMode(false); // Ensure edit mode is off by default
     } catch (error) {
-      console.error("Error fetching course details:", error);
+      console.error("Error fetching class details:", error);
     }
   };
 
@@ -187,7 +209,6 @@ const ClassesListing = () => {
                   <th scope="col">Course Id</th>
                   <th scope="col">Class Video</th>
                   <th scope="col">Class Note</th>
-                  
                   <th scope="col">Created At</th>
                   <th scope="col">Actions</th>
                 </tr>
@@ -251,61 +272,71 @@ const ClassesListing = () => {
                 className="form-control"
               />
 
-              
-
-            <label>
-              <h6>Course</h6>
-            </label>
-            <select
-              name="courseId"
-              value={classesData.courseId}
-              onChange={handleChange}
-              className="form-control"
-            >
-              <option value="">Select Course</option>
-              {courses.map(course => (
-                <option key={course._id} value={course._id}>
-                  {course.courseName}
-                </option>
-              ))}
-            </select>
-
-            <label>
-              <h6>Upload Video</h6>
-            </label>
-            <input
-              type="file"
-              name="classVideo"
-              accept="video/*"
-              onChange={handleChange}
-              className="form-control"
-            />
-
-            <label>
-              <h6>Upload PDF</h6>
-            </label>
-            <input
-              type="file"
-              name="classNotes"
-              accept="application/pdf"
-              onChange={handleChange}
-              className="form-control"
-            />
-
-            </div>
-            <div className="text-center">
-              <button
-                className="btn btn-primary"
-                onClick={handleCreate}
+              <label>
+                <h6>Course</h6>
+              </label>
+              <select
+                name="courseId"
+                value={classesData.courseId}
+                onChange={handleChange}
+                className="form-control"
               >
-                Save
+                <option>Select Course</option>
+                {courses.map((course, index) => (
+                  <option key={index} value={course._id}>
+                    {course.courseName}
+                  </option>
+                ))}
+              </select>
+
+              <label>
+                <h6>Class Video</h6>
+              </label>
+              <input
+                type="file"
+                name="classVideo"
+                onChange={handleChange}
+                placeholder="Upload Class Video"
+                className="form-control"
+              />
+
+              <label>
+                <h6>Class Notes</h6>
+              </label>
+              <input
+                type="file"
+                name="classNotes"
+                onChange={handleChange}
+                placeholder="Upload Class Notes"
+                className="form-control"
+              />
+            </div>
+
+            {/* Progress bar */}
+            {isLoading && (
+              <div className="mt-4">
+                <Spinner animation="border" className="me-2" />
+                Uploading...
+                <ProgressBar
+                  striped
+                  animated
+                  now={uploadProgress}
+                  label={`${uploadProgress}%`}
+                  className="mt-2"
+                />
+              </div>
+            )}
+
+            <div className="text-center mt-4">
+              <button className="btn btn-primary" onClick={handleCreate}>
+                Create
               </button>
             </div>
           </div>
         </Modal.Body>
       </Modal>
 
-      {/* Course Details Modal */}
+      {/* Details Modal */}
       <Modal show={showDetails} onHide={() => setShowDetails(false)}>
         <Modal.Body>
           <h3 className="text-center py-4 position-relative title">
@@ -321,7 +352,7 @@ const ClassesListing = () => {
 
           <div className="p-4">
             <div className="form-group mb-4">
-            <label>
+              <label>
                 <h6>Class Name</h6>
               </label>
               <input
@@ -329,72 +360,76 @@ const ClassesListing = () => {
                 name="className"
                 value={classesData.className}
                 onChange={handleChange}
-                placeholder="Enter Course name"
+                placeholder="Enter Class name"
                 className="form-control"
+                readOnly={!editMode}
               />
+
               <label>
-              <h6>Course</h6>
-            </label>
-            <select
-              name="courseId"
-              value={classesData.courseId}
-              onChange={handleChange}
-              className="form-control"
-            >
-              <option value="">Select Course</option>
-              {courses.map(course => (
-                <option key={course._id} value={course._id}>
-                  {course.courseName}
-                </option>
-              ))}
-            </select>
+                <h6>Course</h6>
+              </label>
+              <select
+                name="courseId"
+                value={classesData.courseId}
+                onChange={handleChange}
+                className="form-control"
+                disabled={!editMode}
+              >
+                <option>Select Course</option>
+                {courses.map((course, index) => (
+                  <option key={index} value={course._id}>
+                    {course.courseName}
+                  </option>
+                ))}
+              </select>
 
-            <label>
-              <h6>Upload Video</h6>
-            </label>
-            <input
-              type="file"
-              name="classVideo"
-              accept="video/*"
-              onChange={handleChange}
-              className="form-control"
-            />
+              <label>
+                <h6>Class Video</h6>
+              </label>
+              <input
+                type="file"
+                name="classVideo"
+                onChange={handleChange}
+                placeholder="Upload Class Video"
+                className="form-control"
+                disabled={!editMode}
+              />
 
-            <label>
-              <h6>Upload PDF</h6>
-            </label>
-            <input
-              type="file"
-              name="classNotes"
-              accept="application/pdf"
-              onChange={handleChange}
-              className="form-control"
-            />
-
-              
+              <label>
+                <h6>Class Notes</h6>
+              </label>
+              <input
+                type="file"
+                name="classNotes"
+                onChange={handleChange}
+                placeholder="Upload Class Notes"
+                className="form-control"
+                disabled={!editMode}
+              />
             </div>
-            <div className="text-center">
-              {editMode ? (
-                <>
-                  <button
-                    className="btn btn-success me-2"
-                    onClick={handleUpdate}
-                  >
-                    Update
-                  </button>
-                  <button
-                    className="btn btn-secondary"
-                    onClick={() => setEditMode(false)}
-                  >
-                    Cancel
-                  </button>
-                </>
-              ) : (
-                <button
-                  className="btn btn-primary"
-                  onClick={() => setEditMode(true)}
-                >
-                  Edit
+
+            {/* Progress bar */}
+            {isLoading && (
+              <div className="mt-4">
+                <Spinner animation="border" className="me-2" />
+                Uploading...
+                <ProgressBar
+                  striped
+                  animated
+                  now={uploadProgress}
+                  label={`${uploadProgress}%`}
+                  className="mt-2"
+                />
+              </div>
+            )}
+
+            <div className="text-center mt-4">
+              <button className="btn btn-primary" onClick={() => setEditMode(true)}>
+                Edit
+              </button>
+              {editMode && (
+                <button className="btn btn-success" onClick={handleUpdate}>
+                  Save
                 </button>
               )}
             </div>
