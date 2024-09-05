@@ -10,6 +10,7 @@ const NewCoursesListing = () => {
   const [editMode, setEditMode] = useState(false);
   const [courseData, setCourseData] = useState({
     courseName: "",
+    description: "",
     courseFees: "",
     courseValidity: "",
     courseImage: null,
@@ -55,6 +56,7 @@ const NewCoursesListing = () => {
     try {
       const formData = new FormData();
       formData.append('courseName', courseData.courseName);
+      formData.append('description', courseData.description);
       formData.append('courseFees', courseData.courseFees);
       formData.append('courseValidity', courseData.courseValidity);
       formData.append('courseImage', courseData.courseImage);
@@ -83,6 +85,7 @@ const NewCoursesListing = () => {
     try {
       const formData = new FormData();
       formData.append('courseName', courseData.courseName);
+      formData.append('description', courseData.description);
       formData.append('courseFees', courseData.courseFees);
       formData.append('courseValidity', courseData.courseValidity);
       formData.append('courseImage', courseData.courseImage);
@@ -167,6 +170,7 @@ const NewCoursesListing = () => {
                 <tr>
                   <th scope="col">No</th>
                   <th scope="col">Course Name</th>
+                  <th scope="col">Description</th>
                   <th scope="col">Fees</th>
                   <th scope="col">Course Validity</th>
                   <th scope="col">Course Image</th>
@@ -181,6 +185,7 @@ const NewCoursesListing = () => {
                   <tr key={index}>
                     <th scope="row">{index + 1}</th>
                     <td>{course?.courseName}</td>
+                    <td>{course?.description}</td>
                     <td>{course?.courseFees}</td>
                     <td>{course?.courseValidity}</td>
                     <td>{course?.courseImage}</td>
@@ -230,6 +235,18 @@ const NewCoursesListing = () => {
                 type="text"
                 name="courseName"
                 value={courseData.courseName}
+                onChange={handleChange}
+                placeholder="Enter Course name"
+                className="form-control"
+              />
+
+              <label>
+                <h6>Course Name</h6>
+              </label>
+              <input
+                type="text"
+                name="description"
+                value={courseData.description}
                 onChange={handleChange}
                 placeholder="Enter Course name"
                 className="form-control"
@@ -305,6 +322,17 @@ const NewCoursesListing = () => {
                 type="text"
                 name="courseName"
                 value={courseData.courseName}
+                onChange={handleChange}
+                placeholder="Enter Course name"
+                className="form-control"
+              />
+              <label>
+                <h6>Course Name</h6>
+              </label>
+              <input
+                type="text"
+                name="description"
+                value={courseData.description}
                 onChange={handleChange}
                 placeholder="Enter Course name"
                 className="form-control"
