@@ -10,7 +10,9 @@ const PreviousPaperListing = () => {
   const [editMode, setEditMode] = useState(false);
   const [previousPaperData, setPreviousPaperData] = useState({
     title: "",
+    description:"",
     pdfUrl: null,
+    pdfImage: null,
 
 
   });
@@ -54,7 +56,9 @@ const PreviousPaperListing = () => {
     try {
       const formData = new FormData();
       formData.append('title', previousPaperData.title);
+      formData.append('description', previousPaperData.description);
       formData.append('pdfUrl', previousPaperData.pdfUrl);
+      formData.append('pdfImage', previousPaperData.pdfImage);
 
       const response = await fetch(`${process.env.REACT_APP_API_BACKEND_URL+apiURl.create_previouspaper}`, {
         method: "POST",
@@ -77,7 +81,9 @@ const PreviousPaperListing = () => {
     try {
       const formData = new FormData();
       formData.append('title', previousPaperData.title);
+      formData.append('description', previousPaperData.description);
       formData.append('pdfUrl', previousPaperData.pdfUrl);
+      formData.append('pdfImage', previousPaperData.pdfImage);
       const response = await fetch(`${process.env.REACT_APP_API_BACKEND_URL+apiURl.edit_previouspaper}/${selectedCourse}`, {
         method: "PUT",
         body: formData,
@@ -155,8 +161,10 @@ const PreviousPaperListing = () => {
                 <tr>
                   <th scope="col">No</th>
                   <th scope="col">Previous Paper Name</th>
-                  <th scope="col">Previous Paper Note</th>
+                  <th scope="col">description</th>
                   
+                  <th scope="col">Previous Paper Note</th>
+                  <th scope="col">Previous Paper Image</th>
                   <th scope="col">Created At</th>
                   <th scope="col">Actions</th>
                 </tr>
@@ -166,7 +174,10 @@ const PreviousPaperListing = () => {
                   <tr key={index}>
                     <th scope="row">{index + 1}</th>
                     <td>{cl?.title}</td>
+                    <td>{cl?.description}</td>
                     <td>{cl?.pdfUrl}</td>
+                    <td>{cl?.pdfImage}</td>
+                    
                     <td>{cl?.createdAt}</td>
                     <td>
                       <button 
@@ -218,9 +229,29 @@ const PreviousPaperListing = () => {
                 className="form-control"
               />
 
+              <label>
+                <h6>description</h6>
+              </label>
+              <input
+                type="text"
+                name="description"
+                value={previousPaperData.description}
+                onChange={handleChange}
+                placeholder="Enter description"
+                className="form-control"
+              />
+
               
 
-            
+            <label>
+              <h6>Upload Image</h6>
+            </label>
+            <input
+              type="file"
+              name="pdfImage"
+              onChange={handleChange}
+              className="form-control"
+            />
 
             <label>
               <h6>Upload PDF</h6>
@@ -274,8 +305,26 @@ const PreviousPaperListing = () => {
                 className="form-control"
               />
               <label>
-              <h6>Course</h6>
+                <h6>description</h6>
+              </label>
+              <input
+                type="text"
+                name="description"
+                value={previousPaperData.description}
+                onChange={handleChange}
+                placeholder="Enter description"
+                className="form-control"
+              />
+
+            <label>
+              <h6>Upload Image</h6>
             </label>
+            <input
+              type="file"
+              name="pdfImage"
+              onChange={handleChange}
+              className="form-control"
+            />
             
             <label>
               <h6>Upload PDF</h6>

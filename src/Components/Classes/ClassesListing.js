@@ -14,6 +14,7 @@ const ClassesListing = () => {
     className: "",
     courseId: "",
     classDescription: "",
+    classImage: null,
     classVideo: null,
     classNotes: null,
   });
@@ -86,6 +87,7 @@ const ClassesListing = () => {
       formData.append('className', classesData.className);
       formData.append('courseId', classesData.courseId);
       formData.append('classDescription', classesData.classDescription);
+      formData.append('classImage', classesData.classImage);
       formData.append('classVideo', classesData.classVideo);
       formData.append('classNotes', classesData.classNotes);
 
@@ -121,6 +123,7 @@ const ClassesListing = () => {
       formData.append('className', classesData.className);
       formData.append('courseId', classesData.courseId);
       formData.append('classDescription', classesData.classDescription);
+      formData.append('classImage', classesData.classImage);
       formData.append('classVideo', classesData.classVideo);
       formData.append('classNotes', classesData.classNotes);
 
@@ -211,6 +214,7 @@ const ClassesListing = () => {
                   <th scope="col">Class Name</th>
                   <th scope="col">Course Id</th>
                   <th scope="col">Class Description</th>
+                  <th scope="col">Class Image</th>
                   <th scope="col">Class Video</th>
                   <th scope="col">Class Note</th>
                   <th scope="col">Created At</th>
@@ -224,6 +228,7 @@ const ClassesListing = () => {
                     <td>{cl?.className}</td>
                     <td>{cl?.courseId}</td>
                     <td>{cl?.classDescription}</td>
+                    <td>{cl?.classImage}</td>
                     <td>{cl?.classVideo}</td>
                     <td>{cl?.classNotes}</td>
                     <td>{cl?.createdAt}</td>
@@ -305,6 +310,17 @@ const ClassesListing = () => {
                   </option>
                 ))}
               </select>
+
+              <label>
+                <h6>Class Image</h6>
+              </label>
+              <input
+                type="file"
+                name="classImage"
+                onChange={handleChange}
+                placeholder="Upload Class Image"
+                className="form-control"
+              />
 
               <label>
                 <h6>Class Video</h6>
@@ -412,6 +428,17 @@ const ClassesListing = () => {
                   </option>
                 ))}
               </select>
+
+              <label>
+                <h6>Class Image</h6>
+              </label>
+              <input
+                type="file"
+                name="classImage"
+                onChange={handleChange}
+                placeholder="Upload Class Image"
+                className="form-control"
+              />
 
               <label>
                 <h6>Class Video</h6>

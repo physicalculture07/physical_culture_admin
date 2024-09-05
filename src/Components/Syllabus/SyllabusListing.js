@@ -10,7 +10,9 @@ const SyllabusListing = () => {
   const [editMode, setEditMode] = useState(false);
   const [syllabusData, setSyllabusData] = useState({
     syllabusTitle: "",
+    description:"",
     pdfUrl: null,
+    pdfImage: null,
 
 
   });
@@ -54,7 +56,9 @@ const SyllabusListing = () => {
     try {
       const formData = new FormData();
       formData.append('syllabusTitle', syllabusData.syllabusTitle);
+      formData.append('description', syllabusData.description);
       formData.append('pdfUrl', syllabusData.pdfUrl);
+      formData.append('pdfImage', syllabusData.pdfImage);
 
       const response = await fetch(`${process.env.REACT_APP_API_BACKEND_URL+apiURl.create_syllabus}`, {
         method: "POST",
@@ -77,7 +81,9 @@ const SyllabusListing = () => {
     try {
       const formData = new FormData();
       formData.append('syllabusTitle', syllabusData.syllabusTitle);
+      formData.append('description', syllabusData.description);
       formData.append('pdfUrl', syllabusData.pdfUrl);
+      formData.append('pdfImage', syllabusData.pdfImage);
       const response = await fetch(`${process.env.REACT_APP_API_BACKEND_URL+apiURl.edit_syllabus}/${selectedCourse}`, {
         method: "PUT",
         body: formData,
@@ -155,7 +161,9 @@ const SyllabusListing = () => {
                 <tr>
                   <th scope="col">No</th>
                   <th scope="col">Syllabus Name</th>
+                  <th scope="col">description</th>
                   <th scope="col">Syllabus Note</th>
+                  <th scope="col">Syllabus Image</th>
                   
                   <th scope="col">Created At</th>
                   <th scope="col">Actions</th>
@@ -166,7 +174,9 @@ const SyllabusListing = () => {
                   <tr key={index}>
                     <th scope="row">{index + 1}</th>
                     <td>{cl?.syllabusTitle}</td>
+                    <td>{cl?.description}</td>
                     <td>{cl?.pdfUrl}</td>
+                    <td>{cl?.pdfImage}</td>
                     <td>{cl?.createdAt}</td>
                     <td>
                       <button 
@@ -218,9 +228,29 @@ const SyllabusListing = () => {
                 className="form-control"
               />
 
-              
+              <label>
+                <h6>description</h6>
+              </label>
+              <input
+                type="text"
+                name="description"
+                value={syllabusData.description}
+                onChange={handleChange}
+                placeholder="Enter description"
+                className="form-control"
+              />
 
             
+
+            <label>
+              <h6>Upload Image</h6>
+            </label>
+            <input
+              type="file"
+              name="pdfImage"
+              onChange={handleChange}
+              className="form-control"
+            />
 
             <label>
               <h6>Upload PDF</h6>
@@ -274,8 +304,26 @@ const SyllabusListing = () => {
                 className="form-control"
               />
               <label>
-              <h6>Course</h6>
+                <h6>description</h6>
+              </label>
+              <input
+                type="text"
+                name="description"
+                value={syllabusData.description}
+                onChange={handleChange}
+                placeholder="Enter description"
+                className="form-control"
+              />
+
+            <label>
+              <h6>Upload Image</h6>
             </label>
+            <input
+              type="file"
+              name="pdfImage"
+              onChange={handleChange}
+              className="form-control"
+            />
             
             <label>
               <h6>Upload PDF</h6>

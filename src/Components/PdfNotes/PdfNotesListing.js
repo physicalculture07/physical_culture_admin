@@ -10,7 +10,9 @@ const PdfNotesListing = () => {
   const [editMode, setEditMode] = useState(false);
   const [previousPaperData, setPreviousPaperData] = useState({
     pdfTitle: "",
+    description: "",
     pdfUrl: null,
+    pdfImage: null,
 
 
   });
@@ -54,7 +56,9 @@ const PdfNotesListing = () => {
     try {
       const formData = new FormData();
       formData.append('pdfTitle', previousPaperData.pdfTitle);
+      formData.append('description', previousPaperData.description);
       formData.append('pdfUrl', previousPaperData.pdfUrl);
+      formData.append('pdfImage', previousPaperData.pdfImage);
 
       const response = await fetch(`${process.env.REACT_APP_API_BACKEND_URL+apiURl.create_pdfnotes}`, {
         method: "POST",
@@ -77,7 +81,10 @@ const PdfNotesListing = () => {
     try {
       const formData = new FormData();
       formData.append('pdfTitle', previousPaperData.pdfTitle);
+      formData.append('description', previousPaperData.description);
       formData.append('pdfUrl', previousPaperData.pdfUrl);
+      formData.append('pdfImage', previousPaperData.pdfImage);
+      
       const response = await fetch(`${process.env.REACT_APP_API_BACKEND_URL+apiURl.edit_pdfnotes}/${selectedCourse}`, {
         method: "PUT",
         body: formData,
@@ -155,8 +162,9 @@ const PdfNotesListing = () => {
                 <tr>
                   <th scope="col">No</th>
                   <th scope="col">Pdf Notes Name</th>
+                  <th scope="col">description</th>
                   <th scope="col">Pdf Notes Note</th>
-                  
+                  <th scope="col">Pdf Image</th>
                   <th scope="col">Created At</th>
                   <th scope="col">Actions</th>
                 </tr>
@@ -166,7 +174,9 @@ const PdfNotesListing = () => {
                   <tr key={index}>
                     <th scope="row">{index + 1}</th>
                     <td>{cl?.pdfTitle}</td>
+                    <td>{cl?.description}</td>
                     <td>{cl?.pdfUrl}</td>
+                    <td>{cl?.pdfImage}</td>
                     <td>{cl?.createdAt}</td>
                     <td>
                       <button 
@@ -217,11 +227,31 @@ const PdfNotesListing = () => {
                 placeholder="Enter Pdf Notes name"
                 className="form-control"
               />
+              <label>
+                <h6>description</h6>
+              </label>
+              <input
+                type="text"
+                name="description"
+                value={previousPaperData.description}
+                onChange={handleChange}
+                placeholder="Enter description"
+                className="form-control"
+              />
 
               
 
             
-
+            <label>
+              <h6>Upload PDF Image</h6>
+            </label>
+            <input
+              type="file"
+              name="pdfImage"
+              onChange={handleChange}
+              className="form-control"
+            />
+            
             <label>
               <h6>Upload PDF</h6>
             </label>
@@ -262,7 +292,7 @@ const PdfNotesListing = () => {
 
           <div className="p-4">
             <div className="form-group mb-4">
-            <label>
+              <label>
                 <h6>Pdf Notes Name</h6>
               </label>
               <input
@@ -273,10 +303,29 @@ const PdfNotesListing = () => {
                 placeholder="Enter Course name"
                 className="form-control"
               />
+
               <label>
-              <h6>Course</h6>
-            </label>
+                <h6>description</h6>
+              </label>
+              <input
+                type="text"
+                name="description"
+                value={previousPaperData.description}
+                onChange={handleChange}
+                placeholder="Enter description"
+                className="form-control"
+              />
             
+            <label>
+              <h6>Upload PDF Image</h6>
+            </label>
+            <input
+              type="file"
+              name="pdfImage"
+              onChange={handleChange}
+              className="form-control"
+            />
+
             <label>
               <h6>Upload PDF</h6>
             </label>

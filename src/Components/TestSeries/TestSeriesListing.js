@@ -10,7 +10,9 @@ const TestSeriesListing = () => {
   const [editMode, setEditMode] = useState(false);
   const [testSeriesData, setTestSeriesData] = useState({
     testSeriesTitle: "",
+    description:"",
     pdfUrl: null,
+    pdfImage: null,
 
 
   });
@@ -54,7 +56,9 @@ const TestSeriesListing = () => {
     try {
       const formData = new FormData();
       formData.append('testSeriesTitle', testSeriesData.testSeriesTitle);
+      formData.append('description', testSeriesData.description);
       formData.append('pdfUrl', testSeriesData.pdfUrl);
+      formData.append('pdfImage', testSeriesData.pdfImage);
 
       const response = await fetch(`${process.env.REACT_APP_API_BACKEND_URL+apiURl.create_testseries}`, {
         method: "POST",
@@ -77,7 +81,9 @@ const TestSeriesListing = () => {
     try {
       const formData = new FormData();
       formData.append('testSeriesTitle', testSeriesData.testSeriesTitle);
+      formData.append('description', testSeriesData.description);
       formData.append('pdfUrl', testSeriesData.pdfUrl);
+      formData.append('pdfImage', testSeriesData.pdfImage);
       const response = await fetch(`${process.env.REACT_APP_API_BACKEND_URL+apiURl.edit_testseries}/${selectedCourse}`, {
         method: "PUT",
         body: formData,
@@ -155,7 +161,9 @@ const TestSeriesListing = () => {
                 <tr>
                   <th scope="col">No</th>
                   <th scope="col">Test Series Name</th>
+                  <th scope="col">description</th>
                   <th scope="col">Test Series Note</th>
+                  <th scope="col">Test Series pdfImage</th>
                   
                   <th scope="col">Created At</th>
                   <th scope="col">Actions</th>
@@ -166,7 +174,9 @@ const TestSeriesListing = () => {
                   <tr key={index}>
                     <th scope="row">{index + 1}</th>
                     <td>{cl?.testSeriesTitle}</td>
+                    <td>{cl?.description}</td>
                     <td>{cl?.pdfUrl}</td>
+                    <td>{cl?.pdfImage}</td>
                     <td>{cl?.createdAt}</td>
                     <td>
                       <button 
@@ -218,6 +228,19 @@ const TestSeriesListing = () => {
                 className="form-control"
               />
 
+              <label>
+                <h6>description</h6>
+              </label>
+              <input
+                type="text"
+                name="description"
+                value={testSeriesData.description}
+                onChange={handleChange}
+                placeholder="Enter description"
+                className="form-control"
+              />
+
+
               
 
             
@@ -229,6 +252,16 @@ const TestSeriesListing = () => {
               type="file"
               name="pdfUrl"
               accept="application/pdf"
+              onChange={handleChange}
+              className="form-control"
+            />
+
+            <label>
+              <h6>Upload Image</h6>
+            </label>
+            <input
+              type="file"
+              name="pdfImage"
               onChange={handleChange}
               className="form-control"
             />
@@ -274,8 +307,16 @@ const TestSeriesListing = () => {
                 className="form-control"
               />
               <label>
-              <h6>Course</h6>
-            </label>
+                <h6>description</h6>
+              </label>
+              <input
+                type="text"
+                name="description"
+                value={testSeriesData.description}
+                onChange={handleChange}
+                placeholder="Enter description"
+                className="form-control"
+              />
             
             <label>
               <h6>Upload PDF</h6>
@@ -284,6 +325,16 @@ const TestSeriesListing = () => {
               type="file"
               name="pdfUrl"
               accept="application/pdf"
+              onChange={handleChange}
+              className="form-control"
+            />
+
+            <label>
+              <h6>Upload Image</h6>
+            </label>
+            <input
+              type="file"
+              name="pdfImage"
               onChange={handleChange}
               className="form-control"
             />
