@@ -14,6 +14,7 @@ const ClassesListing = () => {
     className: "",
     courseId: "",
     classDescription: "",
+    classType:"Paid",
     classImage: null,
     classVideo: null,
     classNotes: null,
@@ -26,6 +27,7 @@ const ClassesListing = () => {
   // New state variables for loader and progress bar
   const [isLoading, setIsLoading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const classTypeDataOptions = [{"name": "Demo Class","value": "Free"}, {"name": "Paid Class","value": "Paid"}]
 
   useEffect(() => {
     fetchClasses();
@@ -87,6 +89,7 @@ const ClassesListing = () => {
       formData.append('className', classesData.className);
       formData.append('courseId', classesData.courseId);
       formData.append('classDescription', classesData.classDescription);
+      formData.append('classType', classesData.classType);
       formData.append('classImage', classesData.classImage);
       formData.append('classVideo', classesData.classVideo);
       formData.append('classNotes', classesData.classNotes);
@@ -123,6 +126,7 @@ const ClassesListing = () => {
       formData.append('className', classesData.className);
       formData.append('courseId', classesData.courseId);
       formData.append('classDescription', classesData.classDescription);
+      formData.append('classType', classesData.classType);
       formData.append('classImage', classesData.classImage);
       formData.append('classVideo', classesData.classVideo);
       formData.append('classNotes', classesData.classNotes);
@@ -214,6 +218,7 @@ const ClassesListing = () => {
                   <th scope="col">Class Name</th>
                   <th scope="col">Course Id</th>
                   <th scope="col">Class Description</th>
+                  <th scope="col">Class Type</th>
                   <th scope="col">Class Image</th>
                   <th scope="col">Class Video</th>
                   <th scope="col">Class Note</th>
@@ -228,6 +233,7 @@ const ClassesListing = () => {
                     <td>{cl?.className}</td>
                     <td>{cl?.courseId}</td>
                     <td>{cl?.classDescription}</td>
+                    <td>{cl?.classType}</td>
                     <td>{cl?.classImage}</td>
                     <td>{cl?.classVideo}</td>
                     <td>{cl?.classNotes}</td>
@@ -293,6 +299,25 @@ const ClassesListing = () => {
                 placeholder="Enter Course name"
                 className="form-control"
               />
+              
+
+              <label>
+                <h6>Class Type</h6>
+              </label>
+              <select
+                name="classType"
+                value={classesData.classType}
+                onChange={handleChange}
+                className="form-control"
+              >
+                {classTypeDataOptions.map((classTypeData, index) => (
+                  <option key={index} value={classTypeData.value}>
+                    {classTypeData.name}
+                  </option>
+                ))}
+              </select>
+
+
 
               <label>
                 <h6>Course</h6>
@@ -410,6 +435,22 @@ const ClassesListing = () => {
                 className="form-control"
                 readOnly={!editMode}
               />
+
+              <label>
+                <h6>Class Type</h6>
+              </label>
+              <select
+                name="classType"
+                value={classesData.classType}
+                onChange={handleChange}
+                className="form-control"
+              >
+                {classTypeDataOptions.map((classTypeData, index) => (
+                  <option key={index} value={classTypeData.value}>
+                    {classTypeData.name}
+                  </option>
+                ))}
+              </select>
 
               <label>
                 <h6>Course</h6>
