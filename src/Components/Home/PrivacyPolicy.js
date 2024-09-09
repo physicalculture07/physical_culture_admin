@@ -4,10 +4,10 @@ const PrivacyPolicy = () => {
     return (
         <div className="privacy-policy">
             <h1>Privacy Policy</h1>
-            <p>Effective Date: [Insert Date]</p>
+            <p>Effective Date: 09 Sept 2024</p>
 
             <h2>Introduction</h2>
-            <p>Welcome to [Your App Name]! This Privacy Policy explains how we collect, use, and protect your personal information when you use our app to access educational coaching courses.</p>
+            <p>Welcome to Physical Culture! This Privacy Policy explains how we collect, use, and protect your personal information when you use our app to access educational coaching courses.</p>
 
             <h2>Information We Collect</h2>
             <p>We collect the following types of information:</p>
@@ -48,8 +48,8 @@ const PrivacyPolicy = () => {
             <h2>Changes to This Privacy Policy</h2>
             <p>We may update this Privacy Policy from time to time. We will notify you of any significant changes by posting the new policy on our app.</p>
 
-            <h2>Contact Us</h2>
-            <p>If you have any questions or concerns about this Privacy Policy, please contact us at [Your Contact Information].</p>
+            {/* <h2>Contact Us</h2>
+            <p>If you have any questions or concerns about this Privacy Policy, please contact us at [Your Contact Information].</p> */}
         </div>
     );
 };
