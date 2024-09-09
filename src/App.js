@@ -14,6 +14,7 @@ import PdfNotesListing from "./Components/PdfNotes/PdfNotesListing";
 import PreviousPaperListing from "./Components/PreviousPaper/PreviousPaperListing";
 import SyllabusListing from "./Components/Syllabus/SyllabusListing";
 import TestSeriesListing from "./Components/TestSeries/TestSeriesListing";
+import PrivacyPolicy from "./Components/Home/PrivacyPolicy";
 
 function App() {
   // const userData = localStorage.getItem("userData");
@@ -57,7 +58,10 @@ function App() {
           <Route path="/dashboard" element={<Navigate to="/" />} />
           </>
         )}
+        
+        
       </Route>
+      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
       </Routes>
     </div>
   );
