@@ -5,6 +5,7 @@ import Modal from "react-bootstrap/Modal";
 import apiURl from "../../store/Action/api-url";
 import ProgressBar from 'react-bootstrap/ProgressBar'; // Import Bootstrap ProgressBar component
 import Spinner from 'react-bootstrap/Spinner'; // Import Bootstrap Spinner component
+import axios from "axios";
 
 const ClassesListing = () => {
   const [showCreate, setShowCreate] = useState(false);
@@ -85,6 +86,7 @@ const ClassesListing = () => {
   const handleCreate = async () => {
     try {
       setIsLoading(true); // Start the loader
+      console.log("progress", uploadProgress);
       const formData = new FormData();
       formData.append('className', classesData.className);
       formData.append('courseId', classesData.courseId);
@@ -94,12 +96,12 @@ const ClassesListing = () => {
       formData.append('classVideo', classesData.classVideo);
       formData.append('classNotes', classesData.classNotes);
 
-      const response = await fetch(`${process.env.REACT_APP_API_BACKEND_URL+apiURl.create_classes}`, {
-        method: "POST",
-        body: formData,
+      const response = await axios.post(`${process.env.REACT_APP_API_BACKEND_URL+apiURl.create_classes}`, formData,
         // Track the upload progress
-        onUploadProgress: (event) => {
+        {onUploadProgress: (event) => {
           const progress = Math.round((event.loaded * 100) / event.total);
+          console.log("progress", progress);
+          
           setUploadProgress(progress);
         }
       });
@@ -141,7 +143,7 @@ const ClassesListing = () => {
         }
       });
 
-      if (response.ok) {
+      if (response.status >= 200 && response.status < 300) {
         console.log("Class updated successfully");
         setShowDetails(false);
         setEditMode(false);
@@ -159,19 +161,25 @@ const ClassesListing = () => {
 
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_BACKEND_URL+apiURl.remove_class}/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (response.ok) {
-        console.log("Class deleted successfully");
-        fetchClasses();
+      const isConfirmed = window.confirm("Are you sure you want to delete this class?");
+      if (isConfirmed) {
+        const response = await fetch(`${process.env.REACT_APP_API_BACKEND_URL+apiURl.remove_class}/${id}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+  
+        if (response.ok) {
+          console.log("Class deleted successfully");
+          fetchClasses();
+        } else {
+          console.error("Failed to delete class");
+        }
       } else {
-        console.error("Failed to delete class");
+        console.log("Deletion canceled");
       }
+      
     } catch (error) {
       console.error("Error deleting class:", error);
     }

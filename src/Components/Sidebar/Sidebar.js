@@ -30,6 +30,13 @@ function Sidebar() {
           </div>
         </Link>
 
+        <Link to="/banners">
+          <div className="sidebar-item">
+            <FaUserAlt className="icon" />
+            <span>Banners</span>
+          </div>
+        </Link>
+
         <Link to="/courses">
           <div className="sidebar-item">
             <FaUserAlt className="icon" />

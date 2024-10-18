@@ -42,6 +42,12 @@ const apiURl = {
   testseries_details:"/admin/all_testSeries",
   edit_testseries:"/admin/edit_testseries",
   remove_testseries:"/admin/remove_testseries",
+
+  all_banners:"/admin/all_banners",
+  create_banners:"/admin/create_banners",
+  banner_details:"/admin/all_banners",
+  edit_banners:"/admin/edit_banners",
+  remove_banners:"/admin/remove_banners",
   
 
 

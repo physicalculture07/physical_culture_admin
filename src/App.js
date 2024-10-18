@@ -14,6 +14,7 @@ import PdfNotesListing from "./Components/PdfNotes/PdfNotesListing";
 import PreviousPaperListing from "./Components/PreviousPaper/PreviousPaperListing";
 import SyllabusListing from "./Components/Syllabus/SyllabusListing";
 import TestSeriesListing from "./Components/TestSeries/TestSeriesListing";
+import BannerListing from "./Components/Banner/BannerListing";
 import PrivacyPolicy from "./Components/Home/PrivacyPolicy";
 
 function App() {
@@ -51,6 +52,7 @@ function App() {
             <Route path="/previouspaper" element={<PreviousPaperListing />} />
             <Route path="/syllabus" element={<SyllabusListing />} />
             <Route path="/testseries" element={<TestSeriesListing />} />
+            <Route path="/banners" element={<BannerListing />} />
           </>
         ) : (
           <>
