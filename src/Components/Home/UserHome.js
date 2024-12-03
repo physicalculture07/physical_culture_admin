@@ -21,7 +21,7 @@ const UserHome = () => {
                     <h1>Welcome to Physical Culture</h1>
                     <p>Your Gateway to Quality Education</p>
                     <a
-                        href="https://drive.google.com/file/d/12eakRAjDIwtOcqSgVdp9Te2nMxbA7bfb/view?usp=sharing"
+                        href="https://drive.google.com/file/d/1kfG6tzVU5rHwXFcw29QewZFn4GE2k_Nh/view?usp=sharing"
                         className="download-link"
                         target="_blank"
                         rel="noopener noreferrer"
