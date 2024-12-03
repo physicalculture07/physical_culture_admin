@@ -79,6 +79,13 @@ function Sidebar() {
           </div>
         </Link>
 
+        {/* <Link to="/buycourse">
+          <div className="sidebar-item">
+            <FaUserAlt className="icon" />
+            <span>Buy Course</span>
+          </div>
+        </Link> */}
+
         
         <div className="sidebar-item" onClick={handleLogout}>
           <FaSignOutAlt className="icon" />

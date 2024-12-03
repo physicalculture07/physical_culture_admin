@@ -16,6 +16,8 @@ import SyllabusListing from "./Components/Syllabus/SyllabusListing";
 import TestSeriesListing from "./Components/TestSeries/TestSeriesListing";
 import BannerListing from "./Components/Banner/BannerListing";
 import PrivacyPolicy from "./Components/Home/PrivacyPolicy";
+import UserHome from "./Components/Home/UserHome";
+import BuyCourse from "./Components/Buy Course/BuyCourse";
 
 function App() {
   // const userData = localStorage.getItem("userData");
@@ -48,6 +50,7 @@ function App() {
             {/* <Route path="/courses" element={<CoursesListing />} /> */}
             <Route path="/courses" element={<NewCoursesListing />} />
             <Route path="/classes" element={<ClassesListing />} />
+            <Route path="/buycourse" element={<BuyCourse />} />
             <Route path="/notes" element={<PdfNotesListing />} />
             <Route path="/previouspaper" element={<PreviousPaperListing />} />
             <Route path="/syllabus" element={<SyllabusListing />} />
@@ -56,7 +59,8 @@ function App() {
           </>
         ) : (
           <>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<UserHome />} />
+          <Route path="/adlogin" element={<Home />} />
           <Route path="/dashboard" element={<Navigate to="/" />} />
           </>
         )}

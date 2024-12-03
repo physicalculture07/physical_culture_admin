@@ -13,7 +13,7 @@ function Layout() {
 
   return (
       
-    <div className="mainRoot">
+    <div className={token && "mainRoot"}>
       {token && <Sidebar/>}
       <div className="mainContent">
         {/* <Header/> */}
