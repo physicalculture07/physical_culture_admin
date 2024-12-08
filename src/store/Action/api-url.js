@@ -49,7 +49,12 @@ const apiURl = {
   edit_banners:"/admin/edit_banners",
   remove_banners:"/admin/remove_banners",
   
-
+  all_buys:"/admin/buy_course",
+  add_course_to_user:"/admin/add_course_to_user",
+  edit_purchase:"/admin/edit_purchase",
+  // all_courses:"/admin/all_courses",
+  delete_purchase:"/admin/delete_purchase",
+  getPurchasedCoursesById:"/admin/getPurchasedCoursesById"
 
 
 };

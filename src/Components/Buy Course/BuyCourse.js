@@ -12,17 +12,18 @@ const BuyCourse = () => {
   const [showDetails, setShowDetails] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [classesData, setClassesData] = useState({
-    className: "",
+    userId: "",
     courseId: "",
-    classDescription: "",
-    classType:"Paid",
-    classImage: null,
-    classVideo: null,
-    classNotes: null,
+    purchaseDate: "",
+    transactionId:"",
+    amount: "",
+    comment: "",
+    paymentStatus: "",
   });
 
   const [classes, setClasses] = useState([]);
   const [courses, setCourses] = useState([]);
+  const [users, setUsers] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
   
   // New state variables for loader and progress bar
@@ -33,11 +34,12 @@ const BuyCourse = () => {
   useEffect(() => {
     fetchClasses();
     fetchCourses();
+    fetchUsers();
   }, []);
 
   const fetchClasses = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_BACKEND_URL+apiURl.all_classes}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_BACKEND_URL+apiURl.all_buys}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -49,6 +51,8 @@ const BuyCourse = () => {
       }
 
       const data = await response.json();
+      console.log(data);
+      
       setClasses(data?.data);
     } catch (error) {
       console.error("Error fetching classes:", error);
@@ -75,6 +79,27 @@ const BuyCourse = () => {
     }
   };
 
+  const fetchUsers = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_BACKEND_URL+apiURl.adminallusers}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setUsers(data?.data);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  };
+
+
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     setClassesData({
@@ -87,16 +112,18 @@ const BuyCourse = () => {
     try {
       setIsLoading(true); // Start the loader
       console.log("progress", uploadProgress);
-      const formData = new FormData();
-      formData.append('className', classesData.className);
-      formData.append('courseId', classesData.courseId);
-      formData.append('classDescription', classesData.classDescription);
-      formData.append('classType', classesData.classType);
-      formData.append('classImage', classesData.classImage);
-      formData.append('classVideo', classesData.classVideo);
-      formData.append('classNotes', classesData.classNotes);
 
-      const response = await axios.post(`${process.env.REACT_APP_API_BACKEND_URL+apiURl.create_classes}`, formData,
+      const payload = {
+        userId: classesData.userId,
+        courseId: classesData.courseId,
+        purchaseDate: classesData.purchaseDate,
+        transactionId: classesData.transactionId,
+        amount: classesData.amount,
+        comment: classesData.comment,
+        paymentStatus: classesData.paymentStatus,
+      };
+
+      const response = await axios.post(`${process.env.REACT_APP_API_BACKEND_URL+apiURl.add_course_to_user}`, payload,
         // Track the upload progress
         {onUploadProgress: (event) => {
           const progress = Math.round((event.loaded * 100) / event.total);
@@ -124,18 +151,31 @@ const BuyCourse = () => {
   const handleUpdate = async () => {
     try {
       setIsLoading(true); // Start the loader
-      const formData = new FormData();
-      formData.append('className', classesData.className);
-      formData.append('courseId', classesData.courseId);
-      formData.append('classDescription', classesData.classDescription);
-      formData.append('classType', classesData.classType);
-      formData.append('classImage', classesData.classImage);
-      formData.append('classVideo', classesData.classVideo);
-      formData.append('classNotes', classesData.classNotes);
+      // const formData = new FormData();
+      // formData.append('className', classesData.className);
+      // formData.append('courseId', classesData.courseId);
+      // formData.append('classDescription', classesData.classDescription);
+      // formData.append('classType', classesData.classType);
+      // formData.append('classImage', classesData.classImage);
+      // formData.append('classVideo', classesData.classVideo);
+      // formData.append('classNotes', classesData.classNotes);
 
-      const response = await fetch(`${process.env.REACT_APP_API_BACKEND_URL+apiURl.edit_class}/${selectedCourse}`, {
+      const payload = {
+        // userId: classesData.userId,
+        // courseId: classesData.courseId,
+        purchaseDate: classesData.purchaseDate,
+        transactionId: classesData.transactionId,
+        amount: classesData.amount,
+        comment: classesData.comment,
+        paymentStatus: classesData.paymentStatus,
+      };
+
+      const response = await fetch(`${process.env.REACT_APP_API_BACKEND_URL+apiURl.edit_purchase}/${selectedCourse}`, {
         method: "PUT",
-        body: formData,
+        headers: {
+          "Content-Type": "application/json", // Set the content type to JSON
+        },
+        body: JSON.stringify(payload),
         // Track the upload progress
         onUploadProgress: (event) => {
           const progress = Math.round((event.loaded * 100) / event.total);
@@ -161,9 +201,9 @@ const BuyCourse = () => {
 
   const handleDelete = async (id) => {
     try {
-      const isConfirmed = window.confirm("Are you sure you want to delete this class?");
+      const isConfirmed = window.confirm("Are you sure you want to delete this purchase?");
       if (isConfirmed) {
-        const response = await fetch(`${process.env.REACT_APP_API_BACKEND_URL+apiURl.remove_class}/${id}`, {
+        const response = await fetch(`${process.env.REACT_APP_API_BACKEND_URL+apiURl.delete_purchase}/${id}`, {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
@@ -187,7 +227,7 @@ const BuyCourse = () => {
 
   const handleShowDetails = async (id) => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_BACKEND_URL+apiURl.classes_details}/${id}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_BACKEND_URL+apiURl.getPurchasedCoursesById}/${id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -200,7 +240,16 @@ const BuyCourse = () => {
 
       const data = await response.json();
       setSelectedCourse(id);
-      setClassesData(data.data || {}); // Populate classesData with the details or keep it as an empty object
+      // setClassesData(data.data || {}); // Populate classesData with the details or keep it as an empty object
+      setClassesData({
+        userId: data.data?.userId?._id || "",
+        courseId: data.data?.courseId?._id || "",
+        purchaseDate: data.data?.purchaseDate || "",
+        transactionId: data.data?.transactionId || "",
+        amount: data.data?.amount || "",
+        comment: data.data?.comment || "",
+        paymentStatus: data.data?.paymentStatus || "",
+      });
       setShowDetails(true);
       setEditMode(false); // Ensure edit mode is off by default
     } catch (error) {
@@ -213,7 +262,7 @@ const BuyCourse = () => {
       <div className="container-fluid ps-3">
         <div className="d-flex justify-content-end mb-3">
           <button className="btn btn-primary" onClick={() => setShowCreate(true)}>
-            Create New Class
+            Add Course To User
           </button>
         </div>
 
@@ -223,13 +272,13 @@ const BuyCourse = () => {
               <thead>
                 <tr>
                   <th scope="col">No</th>
-                  <th scope="col">Class Name</th>
+                  <th scope="col">Course Name</th>
+                  <th scope="col">User Name</th>
+                  <th scope="col">Mobile No.</th>
+                  <th scope="col">Amount</th>
+                  <th scope="col">Purchase Date</th>
+                  <th scope="col">User Id</th>
                   <th scope="col">Course Id</th>
-                  <th scope="col">Class Description</th>
-                  <th scope="col">Class Type</th>
-                  <th scope="col">Class Image</th>
-                  <th scope="col">Class Video</th>
-                  <th scope="col">Class Note</th>
                   <th scope="col">Created At</th>
                   <th scope="col">Actions</th>
                 </tr>
@@ -238,13 +287,13 @@ const BuyCourse = () => {
                 {classes.map((cl, index) => (
                   <tr key={index}>
                     <th scope="row">{index + 1}</th>
-                    <td>{cl?.className}</td>
-                    <td>{cl?.courseId}</td>
-                    <td>{cl?.classDescription}</td>
-                    <td>{cl?.classType}</td>
-                    <td>{cl?.classImage}</td>
-                    <td>{cl?.classVideo}</td>
-                    <td>{cl?.classNotes}</td>
+                    <td>{cl?.courseId?.courseName}</td>
+                    <td>{cl?.userId?.firstName + " "+ cl?.userId?.firstName}</td>
+                    <td>{cl?.userId?.mobileNo}</td>
+                    <td>{cl?.amount}</td>
+                    <td>{cl?.purchaseDate}</td>
+                    <td>{cl?.courseId?._id}</td>
+                    <td>{cl?.userId?._id}</td>
                     <td>{cl?.createdAt}</td>
                     <td>
                       <button 
@@ -284,50 +333,8 @@ const BuyCourse = () => {
 
           <div className="p-4">
             <div className="form-group mb-4">
-              <label>
-                <h6>Class Name</h6>
-              </label>
-              <input
-                type="text"
-                name="className"
-                value={classesData.className}
-                onChange={handleChange}
-                placeholder="Enter Course name"
-                className="form-control"
-              />
 
-              <label>
-                <h6>Class Description</h6>
-              </label>
-              <input
-                type="text"
-                name="classDescription"
-                value={classesData.classDescription}
-                onChange={handleChange}
-                placeholder="Enter Course name"
-                className="form-control"
-              />
-              
-
-              <label>
-                <h6>Class Type</h6>
-              </label>
-              <select
-                name="classType"
-                value={classesData.classType}
-                onChange={handleChange}
-                className="form-control"
-              >
-                {classTypeDataOptions.map((classTypeData, index) => (
-                  <option key={index} value={classTypeData.value}>
-                    {classTypeData.name}
-                  </option>
-                ))}
-              </select>
-
-
-
-              <label>
+            <label>
                 <h6>Course Name</h6>
               </label>
               <select
@@ -343,6 +350,82 @@ const BuyCourse = () => {
                   </option>
                 ))}
               </select>
+
+              <label>
+                <h6>User Name</h6>
+              </label>
+              <select
+                name="userId"
+                value={classesData.userId}
+                onChange={handleChange}
+                className="form-control"
+              >
+                <option>Select User</option>
+                {users.map((user, index) => (
+                  <option key={index} value={user._id}>
+                    {user.firstName +" "+user.lastName + "("+user.mobileNo+")"}
+                  </option>
+                ))}
+              </select>
+
+              <label>
+                <h6>transactionId</h6>
+              </label>
+              <input
+                type="text"
+                name="transactionId"
+                value={classesData.transactionId}
+                onChange={handleChange}
+                placeholder="Enter transactionId"
+                className="form-control"
+              />
+
+
+
+              <label>
+                <h6>Ammount</h6>
+              </label>
+              <input
+                type="Number"
+                name="amount"
+                min={0}
+                value={classesData.amount}
+                onChange={handleChange}
+                placeholder="Enter amount"
+                className="form-control"
+              />
+
+              <label>
+                <h6>Comment</h6>
+              </label>
+              <input
+                type="text"
+                name="comment"
+                value={classesData.comment}
+                onChange={handleChange}
+                placeholder="Enter comment"
+                className="form-control"
+              />
+              
+
+              <label>
+                <h6>Payment</h6>
+              </label>
+              <select
+                name="paymentStatus"
+                value={classesData.paymentStatus}
+                onChange={handleChange}
+                className="form-control"
+              >
+                
+                <option value="Pending">Pending</option>
+                <option value="Failed">Failed</option>
+                <option value="Completed">Completed</option>
+              </select>
+
+
+
+              
 
               
             </div>
@@ -375,7 +458,7 @@ const BuyCourse = () => {
       <Modal show={showDetails} onHide={() => setShowDetails(false)}>
         <Modal.Body>
           <h3 className="text-center py-4 position-relative title">
-            Class Details
+            Purchase Details
             <span
               className="modalClose"
               onClick={() => setShowDetails(false)}
@@ -387,57 +470,17 @@ const BuyCourse = () => {
 
           <div className="p-4">
             <div className="form-group mb-4">
-              <label>
-                <h6>Class Name</h6>
-              </label>
-              <input
-                type="text"
-                name="className"
-                value={classesData.className}
-                onChange={handleChange}
-                placeholder="Enter Class name"
-                className="form-control"
-                readOnly={!editMode}
-              />
+            
 
-              <label>
-                <h6>Class Description</h6>
-              </label>
-              <input
-                type="text"
-                name="classDescription"
-                value={classesData.classDescription}
-                onChange={handleChange}
-                placeholder="Enter Class name"
-                className="form-control"
-                readOnly={!editMode}
-              />
-
-              <label>
-                <h6>Class Type</h6>
-              </label>
-              <select
-                name="classType"
-                value={classesData.classType}
-                onChange={handleChange}
-                className="form-control"
-              >
-                {classTypeDataOptions.map((classTypeData, index) => (
-                  <option key={index} value={classTypeData.value}>
-                    {classTypeData.name}
-                  </option>
-                ))}
-              </select>
-
-              <label>
-                <h6>Course</h6>
+            <label>
+                <h6>Course Name</h6>
               </label>
               <select
                 name="courseId"
                 value={classesData.courseId}
                 onChange={handleChange}
                 className="form-control"
-                disabled={!editMode}
+                disabled="true"
               >
                 <option>Select Course</option>
                 {courses.map((course, index) => (
@@ -448,39 +491,83 @@ const BuyCourse = () => {
               </select>
 
               <label>
-                <h6>Class Image</h6>
+                <h6>User Name</h6>
+              </label>
+              <select
+                name="userId"
+                value={classesData.userId}
+                onChange={handleChange}
+                className="form-control"
+                disabled={"true"}
+              >
+                <option>Select User</option>
+                {users.map((user, index) => (
+                  <option key={index} value={user._id}>
+                    {user.firstName +" "+user.lastName + "("+user.mobileNo+")"}
+                  </option>
+                ))}
+              </select>
+
+              <label>
+                <h6>transactionId</h6>
               </label>
               <input
-                type="file"
-                name="classImage"
+                type="text"
+                name="transactionId"
+                value={classesData.transactionId}
                 onChange={handleChange}
-                placeholder="Upload Class Image"
+                placeholder="Enter transactionId"
                 className="form-control"
+                readOnly={!editMode}
+              />
+
+
+
+              <label>
+                <h6>Ammount</h6>
+              </label>
+              <input
+                type="Number"
+                name="amount"
+                min={0}
+                value={classesData.amount}
+                onChange={handleChange}
+                placeholder="Enter amount"
+                className="form-control"
+                readOnly={!editMode}
               />
 
               <label>
-                <h6>Class Video</h6>
+                <h6>Comment</h6>
               </label>
               <input
-                type="file"
-                name="classVideo"
+                type="text"
+                name="comment"
+                value={classesData.comment}
                 onChange={handleChange}
-                placeholder="Upload Class Video"
+                placeholder="Enter comment"
                 className="form-control"
-                disabled={!editMode}
+                readOnly={!editMode}
               />
+              
 
               <label>
-                <h6>Class Notes</h6>
+                <h6>Payment</h6>
               </label>
-              <input
-                type="file"
-                name="classNotes"
+              <select
+                name="paymentStatus"
+                value={classesData.paymentStatus}
                 onChange={handleChange}
-                placeholder="Upload Class Notes"
                 className="form-control"
                 disabled={!editMode}
-              />
+              >
+                
+                <option value="Pending">Pending</option>
+                <option value="Failed">Failed</option>
+                <option value="Completed">Completed</option>
+              </select>
+
+               
             </div>
 
             {/* Progress bar */}

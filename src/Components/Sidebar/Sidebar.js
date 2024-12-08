@@ -79,12 +79,12 @@ function Sidebar() {
           </div>
         </Link>
 
-        {/* <Link to="/buycourse">
+        <Link to="/buycourse">
           <div className="sidebar-item">
             <FaUserAlt className="icon" />
             <span>Buy Course</span>
           </div>
-        </Link> */}
+        </Link>
 
         
         <div className="sidebar-item" onClick={handleLogout}>
