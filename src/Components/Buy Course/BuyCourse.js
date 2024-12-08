@@ -125,15 +125,17 @@ const BuyCourse = () => {
 
       const response = await axios.post(`${process.env.REACT_APP_API_BACKEND_URL+apiURl.add_course_to_user}`, payload,
         // Track the upload progress
-        {onUploadProgress: (event) => {
-          const progress = Math.round((event.loaded * 100) / event.total);
-          console.log("progress", progress);
-          
-          setUploadProgress(progress);
+        {
+          onUploadProgress: (event) => {
+            const progress = Math.round((event.loaded * 100) / event.total);
+            console.log("progress", progress);
+            
+            setUploadProgress(progress);
+          }
         }
-      });
+      );
 
-      if (response.ok) {
+      if (response.status) {
         console.log("Class created successfully");
         setShowCreate(false);
         fetchClasses();
