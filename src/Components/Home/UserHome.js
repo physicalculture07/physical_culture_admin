@@ -21,7 +21,7 @@ const UserHome = () => {
                     <h1>Welcome to Physical Culture</h1>
                     <p>Your Gateway to Quality Education</p>
                     <a
-                        href="https://drive.google.com/file/d/1hHC7_7eZF4NIOlYSlqI87pSxfZOfSVX0/view?usp=sharing"
+                        href="https://play.google.com/store/apps/details?id=com.physicalCultureNew.physical_culture"
                         className="download-link"
                         target="_blank"
                         rel="noopener noreferrer"
