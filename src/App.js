@@ -18,6 +18,7 @@ import BannerListing from "./Components/Banner/BannerListing";
 import PrivacyPolicy from "./Components/Home/PrivacyPolicy";
 import UserHome from "./Components/Home/UserHome";
 import BuyCourse from "./Components/Buy Course/BuyCourse";
+import ChaptersListing from "./Components/Chapters/ChaptersListing";
 
 function App() {
   // const userData = localStorage.getItem("userData");
@@ -49,6 +50,7 @@ function App() {
             <Route path="/users" element={<UserListing />} />
             {/* <Route path="/courses" element={<CoursesListing />} /> */}
             <Route path="/courses" element={<NewCoursesListing />} />
+            <Route path="/chapters" element={<ChaptersListing />} />
             <Route path="/classes" element={<ClassesListing />} />
             <Route path="/buycourse" element={<BuyCourse />} />
             <Route path="/notes" element={<PdfNotesListing />} />

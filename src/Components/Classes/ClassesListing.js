@@ -14,6 +14,7 @@ const ClassesListing = () => {
   const [classesData, setClassesData] = useState({
     className: "",
     courseId: "",
+    chapterId:"",
     classDescription: "",
     classType:"Paid",
     classImage: null,
@@ -24,6 +25,9 @@ const ClassesListing = () => {
   const [classes, setClasses] = useState([]);
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
+
+  const [chapters, setChapters] = useState([]);
+  const [selectedChapters, setSelectedChapters] = useState(null);
   
   // New state variables for loader and progress bar
   const [isLoading, setIsLoading] = useState(false);
@@ -75,12 +79,37 @@ const ClassesListing = () => {
     }
   };
 
+  const fetchChaptersByCourse = async (id) => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_BACKEND_URL+apiURl.get_chapters_by_course}/${id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setChapters(data?.data);
+    } catch (error) {
+      console.error("Error fetching courses:", error);
+    }
+  };
+
+
   const handleChange = (e) => {
     const { name, value, files } = e.target;
+    
     setClassesData({
       ...classesData,
       [name]: files ? files[0] : value,
     });
+    if(name == "courseId"){
+      fetchChaptersByCourse(value)
+    }
   };
 
   const handleCreate = async () => {
@@ -90,6 +119,7 @@ const ClassesListing = () => {
       const formData = new FormData();
       formData.append('className', classesData.className);
       formData.append('courseId', classesData.courseId);
+      formData.append('chapterId', classesData.chapterId);
       formData.append('classDescription', classesData.classDescription);
       formData.append('classType', classesData.classType);
       formData.append('classImage', classesData.classImage);
@@ -127,6 +157,7 @@ const ClassesListing = () => {
       const formData = new FormData();
       formData.append('className', classesData.className);
       formData.append('courseId', classesData.courseId);
+      formData.append('chapterId', classesData.chapterId);
       formData.append('classDescription', classesData.classDescription);
       formData.append('classType', classesData.classType);
       formData.append('classImage', classesData.classImage);
@@ -201,6 +232,7 @@ const ClassesListing = () => {
       const data = await response.json();
       setSelectedCourse(id);
       setClassesData(data.data || {}); // Populate classesData with the details or keep it as an empty object
+      fetchChaptersByCourse(data.data.courseId)
       setShowDetails(true);
       setEditMode(false); // Ensure edit mode is off by default
     } catch (error) {
@@ -225,6 +257,7 @@ const ClassesListing = () => {
                   <th scope="col">No</th>
                   <th scope="col">Class Name</th>
                   <th scope="col">Course Id</th>
+                  <th scope="col">Chapter Id</th>
                   <th scope="col">Class Description</th>
                   <th scope="col">Class Type</th>
                   <th scope="col">Class Image</th>
@@ -240,6 +273,7 @@ const ClassesListing = () => {
                     <th scope="row">{index + 1}</th>
                     <td>{cl?.className}</td>
                     <td>{cl?.courseId}</td>
+                    <td>{cl?.chapterId}</td>
                     <td>{cl?.classDescription}</td>
                     <td>{cl?.classType}</td>
                     <td>{cl?.classImage}</td>
@@ -340,6 +374,23 @@ const ClassesListing = () => {
                 {courses.map((course, index) => (
                   <option key={index} value={course._id}>
                     {course.courseName}
+                  </option>
+                ))}
+              </select>
+
+              <label>
+                <h6>Chapter</h6>
+              </label>
+              <select
+                name="chapterId"
+                value={classesData.chapterId}
+                onChange={handleChange}
+                className="form-control"
+              >
+                <option>Select Chapter</option>
+                {chapters.map((chapter, index) => (
+                  <option key={index} value={chapter._id}>
+                    {chapter.chapterName}
                   </option>
                 ))}
               </select>
@@ -474,6 +525,23 @@ const ClassesListing = () => {
                 {courses.map((course, index) => (
                   <option key={index} value={course._id}>
                     {course.courseName}
+                  </option>
+                ))}
+              </select>
+
+              <label>
+                <h6>Chapter</h6>
+              </label>
+              <select
+                name="chapterId"
+                value={classesData.chapterId}
+                onChange={handleChange}
+                className="form-control"
+              >
+                <option>Select Chapter</option>
+                {chapters.map((chapter, index) => (
+                  <option key={index} value={chapter._id}>
+                    {chapter.chapterName}
                   </option>
                 ))}
               </select>

@@ -11,6 +11,13 @@ const apiURl = {
   // all_courses:"/admin/all_courses",
   remove_course:"/admin/remove_course",
 
+  all_chapters:"/admin/all_chapter",
+  create_chapters:"/admin/create_chapter",
+  chapters_details:"/admin/all_chapters",
+  edit_chapters:"/admin/update-chapter",
+  remove_chapter:"/admin/remove_chapters",
+  get_chapters_by_course:"/admin/get_chapters_by_course",
+
 
   all_classes:"/admin/all_classes",
   create_classes:"/admin/create_class",

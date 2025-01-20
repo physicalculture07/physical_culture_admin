@@ -44,6 +44,13 @@ function Sidebar() {
           </div>
         </Link>
 
+        <Link to="/chapters">
+          <div className="sidebar-item">
+            <FaUserAlt className="icon" />
+            <span>Chapters</span>
+          </div>
+        </Link>
+
         <Link to="/classes">
           <div className="sidebar-item">
             <FaUserAlt className="icon" />

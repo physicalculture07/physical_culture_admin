@@ -68,7 +68,7 @@ const Header=()=>{
                                 <li className="userClass">
                                     <Dropdown>
                                         <Dropdown.Toggle className="userBtn" id="dropdown-basic"><img className="me-2" src="/Image/user.png" />
-                                       Ashish Belwal <FaAngleDown className="arrowIcon" /></Dropdown.Toggle>
+                                       Vikram <FaAngleDown className="arrowIcon" /></Dropdown.Toggle>
                                         <Dropdown.Menu>
                                             <Dropdown.Item href="#" ><span><TbUserStar /></span> User Preferences</Dropdown.Item>
                                             <Dropdown.Item href="#" ><span><IoGlobeOutline /></span> Add Social Media</Dropdown.Item>
