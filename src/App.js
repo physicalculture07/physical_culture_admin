@@ -19,6 +19,7 @@ import PrivacyPolicy from "./Components/Home/PrivacyPolicy";
 import UserHome from "./Components/Home/UserHome";
 import BuyCourse from "./Components/Buy Course/BuyCourse";
 import ChaptersListing from "./Components/Chapters/ChaptersListing";
+import TermsAndCondition from "./Components/Home/TermsAndCondition";
 
 function App() {
   // const userData = localStorage.getItem("userData");
@@ -70,6 +71,7 @@ function App() {
         
       </Route>
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+      <Route path="/terms-and-conditions" element={<TermsAndCondition />} />
       </Routes>
     </div>
   );
