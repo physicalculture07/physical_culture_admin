@@ -14,12 +14,14 @@ import PdfNotesListing from "./Components/PdfNotes/PdfNotesListing";
 import PreviousPaperListing from "./Components/PreviousPaper/PreviousPaperListing";
 import SyllabusListing from "./Components/Syllabus/SyllabusListing";
 import TestSeriesListing from "./Components/TestSeries/TestSeriesListing";
+import TestSeriesListingNew from "./Components/TestSeriesNew/TestSeriesListingNew";
 import BannerListing from "./Components/Banner/BannerListing";
 import PrivacyPolicy from "./Components/Home/PrivacyPolicy";
 import UserHome from "./Components/Home/UserHome";
 import BuyCourse from "./Components/Buy Course/BuyCourse";
 import ChaptersListing from "./Components/Chapters/ChaptersListing";
 import TermsAndCondition from "./Components/Home/TermsAndCondition";
+import TestForm from "./Components/TestSeriesNew/Tests/TestForm";
 
 function App() {
   // const userData = localStorage.getItem("userData");
@@ -58,6 +60,10 @@ function App() {
             <Route path="/previouspaper" element={<PreviousPaperListing />} />
             <Route path="/syllabus" element={<SyllabusListing />} />
             <Route path="/testseries" element={<TestSeriesListing />} />
+            <Route path="/testseriesnew" element={<TestSeriesListingNew />} />
+
+            <Route path="/testform" element={<TestForm />} />
+
             <Route path="/banners" element={<BannerListing />} />
           </>
         ) : (
@@ -69,9 +75,9 @@ function App() {
         )}
         
         
-      </Route>
-      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-      <Route path="/terms-and-conditions" element={<TermsAndCondition />} />
+        </Route>
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/terms-and-conditions" element={<TermsAndCondition />} />
       </Routes>
     </div>
   );

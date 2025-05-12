@@ -61,7 +61,13 @@ const apiURl = {
   edit_purchase:"/admin/edit_purchase",
   // all_courses:"/admin/all_courses",
   delete_purchase:"/admin/delete_purchase",
-  getPurchasedCoursesById:"/admin/getPurchasedCoursesById"
+  getPurchasedCoursesById:"/admin/getPurchasedCoursesById",
+
+
+  all_newtestseries:"/admin/all_newtestseries",
+  create_newtestseries:"/admin/create_newtestseries",
+  all_testseriesnew:"/admin/all_testseriesnew",
+  remove_newtestseries:"/admin/remove_newtestseries",
 
 
 };

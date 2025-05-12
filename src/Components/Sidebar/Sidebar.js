@@ -86,6 +86,20 @@ function Sidebar() {
           </div>
         </Link>
 
+        <Link to="/testseriesnew">
+          <div className="sidebar-item">
+            <FaUserAlt className="icon" />
+            <span>Test Series V2</span>
+          </div>
+        </Link>
+
+        <Link to="/testform">
+          <div className="sidebar-item">
+            <FaUserAlt className="icon" />
+            <span>Add Test</span>
+          </div>
+        </Link>
+
         <Link to="/buycourse">
           <div className="sidebar-item">
             <FaUserAlt className="icon" />
